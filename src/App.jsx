@@ -18,7 +18,7 @@ const handleSubmit = async (e) => {
 
   try {
     await fetch(
-      'https://script.google.com/macros/s/AKfycbyN42vHVtwmUcQ8o9IGM9wLD3Ji-LQsxJbnGtd4oz5lA-oyrtOyxsmCYxbxOomolVJmcA/exec',
+      'https://script.google.com/macros/s/AKfycbxIlhqCHc8npB3IASj-CsQQ-guqOFuD79vHTDTDjEqbwhsJP7cvoVeAjSUdVQzU4NWkkQ/exec',
       {
         method: 'POST',
         mode: 'no-cors',
@@ -26,7 +26,7 @@ const handleSubmit = async (e) => {
       }
     );
 
-    // You won't get a JSON response in no-cors mode, so assume success
+    // ✅ Assume success because of no-cors mode
     setSubmitted(true);
   } catch (error) {
     console.error('Submission error:', error);

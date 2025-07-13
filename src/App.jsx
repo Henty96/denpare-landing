@@ -11,16 +11,32 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const scriptURL = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
-    const formData = new FormData();
-    formData.append('entry.YOUR_NAME_ENTRY_ID', form.name);
-    formData.append('entry.YOUR_EMAIL_ENTRY_ID', form.email);
-
+  
     try {
-      await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: formData });
-      setSubmitted(true);
+      const response = await fetch(
+        'https://script.google.com/macros/s/AKfycbyN42vHVtwmUcQ8o9IGM9wLD3Ji-LQsxJbnGtd4oz5lA-oyrtOyxsmCYxbxOomolVJmcA/exec',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: form.email,
+            practice: form.name,
+          }),
+        }
+      );
+  
+      const result = await response.json();
+  
+      if (result.status === 'success') {
+        setSubmitted(true);
+      } else {
+        alert('Submission failed. Please try again.');
+      }
     } catch (error) {
-      alert('Error submitting form');
+      console.error('Submission error:', error);
+      alert('There was an error submitting the form.');
     }
   };
 

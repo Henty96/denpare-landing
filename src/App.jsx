@@ -9,36 +9,30 @@ const App = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    try {
-      const response = await fetch(
-        'https://script.google.com/macros/s/AKfycbyN42vHVtwmUcQ8o9IGM9wLD3Ji-LQsxJbnGtd4oz5lA-oyrtOyxsmCYxbxOomolVJmcA/exec',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: form.email,
-            practice: form.name,
-          }),
-        }
-      );
-  
-      const result = await response.json();
-  
-      if (result.status === 'success') {
-        setSubmitted(true);
-      } else {
-        alert('Submission failed. Please try again.');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append('email', form.email);
+  formData.append('practice', form.name);
+
+  try {
+    await fetch(
+      'https://script.google.com/macros/s/AKfycbyN42vHVtwmUcQ8o9IGM9wLD3Ji-LQsxJbnGtd4oz5lA-oyrtOyxsmCYxbxOomolVJmcA/exec',
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData,
       }
-    } catch (error) {
-      console.error('Submission error:', error);
-      alert('There was an error submitting the form.');
-    }
-  };
+    );
+
+    // You won't get a JSON response in no-cors mode, so assume success
+    setSubmitted(true);
+  } catch (error) {
+    console.error('Submission error:', error);
+    alert('There was an error submitting the form.');
+  }
+};
 
   return (
     <div className="min-h-screen bg-white text-gray-900 p-6 flex flex-col items-center justify-center">
